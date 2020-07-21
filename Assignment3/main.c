@@ -6,8 +6,12 @@
  * 
  * Created on July 18, 2020
  * 
- * 
- * 
+ * This program has two parts:
+ *  Part 1 controls if user input has a properly paired brackets
+ *   using an implementation of Stack.
+ *  Part 2 implements and measures 3 sorting algorithms execution:
+ *   Bubble Sort, Selection Sort, Quick Sort
+ *  It uses 2 source of data: Random number list, Number list file
 ----------------------------------------------------------------------
  */
 
@@ -28,6 +32,15 @@
 //Define maximum length for arrays
 #define SIZE 10000
 
+//Measure and print timing taken by Bubble sort algorithm
+void measureBubbleSort(int[]);
+
+//Measure and print timing taken by Bubble sort algorithm
+void measureSelectionSort(int[]);
+
+//Measure and print timing taken by Bubble sort algorithm
+void measureQuickSort(int[]);
+
 //Implement Bubble Sort
 void bubbleSort(int arr[], int);
 
@@ -40,14 +53,14 @@ void quickSort(int[], int, int);
 //Implement Partition method for Quick Sort
 int partition(int[], int, int);
 
+//Implement algorithm to swap array elements
+void swap(int*, int*);
+
 //Save array content into a file
 void write_out(int[], size_t, const char*);
 
 //Read from file and store in array
 void read_in(int[]);
-
-//Implement algorithm to swap array elements
-void swap(int*, int*);
 
 //Perform algorithm comparison between Bubble, Selection and Quick Sort
 //using random numbers
@@ -82,36 +95,15 @@ void random_Numbers_Measurement() {
     }
 
     //Bubble Sort
-    start = clock();
-    bubbleSort(arr, SIZE);
-    end = clock();
-
-    timeElapsed = ((double) (end - start) / CLOCKS_PER_SEC);
-    printf("Time in seconds taken by Bubble sort: %f\n", timeElapsed);
-    timeElapsed = 0.0;
-
+    measureBubbleSort(arr);
     write_out(arr, SIZE, OUT_BUBBLE_SORT_RANDOM);
 
     //Selection Sort
-    start = clock();
-    selectionSort(arr, SIZE);
-    end = clock();
-
-    timeElapsed = ((double) (end - start) / CLOCKS_PER_SEC);
-    printf("Time in seconds taken by Selection sort: %f\n", timeElapsed);
-    timeElapsed = 0.0;
-
+    measureSelectionSort(arr);
     write_out(arr, SIZE, OUT_SELECTION_SORT_RANDOM);
 
     //Quick Sort
-    start = clock();
-    quickSort(arr, 0, SIZE - 1);
-    end = clock();
-
-    timeElapsed = ((double) (end - start) / CLOCKS_PER_SEC);
-    printf("Time in seconds taken by Quick sort: %f\n", timeElapsed);
-    timeElapsed = 0.0;
-
+    measureQuickSort(arr);
     write_out(arr, SIZE, OUT_QUICK_SORT_RANDOM);
 }
 
@@ -120,39 +112,47 @@ void file_Numbers_Measurement() {
 
     //Bubble Sort
     read_in(arr);
+    measureBubbleSort(arr);
+    write_out(arr, SIZE, OUT_BUBBLE_SORT);
+
+    //Selection Sort
+    read_in(arr);
+   measureSelectionSort(arr);
+    write_out(arr, SIZE, OUT_SELECTION_SORT);
+
+    //Quick Sort
+    read_in(arr);
+    measureQuickSort(arr);
+    write_out(arr, SIZE, OUT_QUICK_SORT);
+}
+
+void measureBubbleSort(int arr[]){
+    //Bubble Sort
     start = clock();
     bubbleSort(arr, SIZE);
     end = clock();
 
     timeElapsed = ((double) (end - start) / CLOCKS_PER_SEC);
     printf("Time in seconds taken by Bubble sort: %f\n", timeElapsed);
-    timeElapsed = 0.0;
+}
 
-    write_out(arr, SIZE, OUT_BUBBLE_SORT);
-
+void measureSelectionSort(int arr[]){
     //Selection Sort
-    read_in(arr);
     start = clock();
     selectionSort(arr, SIZE);
     end = clock();
 
     timeElapsed = ((double) (end - start) / CLOCKS_PER_SEC);
     printf("Time in seconds taken by Selection sort: %f\n", timeElapsed);
-    timeElapsed = 0.0;
+}
 
-    write_out(arr, SIZE, OUT_SELECTION_SORT);
-
-    //Quick Sort
-    read_in(arr);
+void measureQuickSort(int arr[]){
     start = clock();
     quickSort(arr, 0, SIZE - 1);
     end = clock();
 
     timeElapsed = ((double) (end - start) / CLOCKS_PER_SEC);
     printf("Time in seconds taken by Quick sort: %f\n", timeElapsed);
-    timeElapsed = 0.0;
-
-    write_out(arr, SIZE, OUT_QUICK_SORT);
 }
 
 void bubbleSort(int arr[], int length) {
@@ -182,6 +182,19 @@ void selectionSort(int arr[], int length) {
     }
 }
 
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        /* pi is partitioning index, arr[p] is now 
+           at right place */
+        int pi = partition(arr, low, high);
+
+        // Separately sort elements before 
+        // partition and after partition 
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
 int partition(int arr[], int low, int high) {
     int pivot = arr[high]; // pivot 
     int i = low; // Index of smaller element 
@@ -199,17 +212,10 @@ int partition(int arr[], int low, int high) {
     return i;
 }
 
-void quickSort(int arr[], int low, int high) {
-    if (low < high) {
-        /* pi is partitioning index, arr[p] is now 
-           at right place */
-        int pi = partition(arr, low, high);
-
-        // Separately sort elements before 
-        // partition and after partition 
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
-    }
+void swap(int* a, int* b) {
+    int tmp = *b;
+    *b = *a;
+    *a = tmp;
 }
 
 void write_out(int arr[], size_t size, const char* fileName) {
@@ -242,8 +248,5 @@ void read_in(int arr[]) {
     fclose(fp);
 }
 
-void swap(int* a, int* b) {
-    int tmp = *b;
-    *b = *a;
-    *a = tmp;
-}
+
+
