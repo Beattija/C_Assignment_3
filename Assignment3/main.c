@@ -1,17 +1,14 @@
 /*
  * ASSIGNMENT # 3 - Part 2 - SORTING ALGORITHM COMPARISON
+ * 
  * "Manuel Sanchez Moyano" <sancmanu@sheridan.desire2learn.com> 
  * "Jason Beattie" <beattija@sheridan.desire2learn.com> 
  * 
-----------------------------------------------------------------------
- */
-
-/* 
- * File:   main.c
- * Author: Manuel Sanchez <sancmanu@sheridan.desire2learn.com>
+ * Created on July 18, 2020
  * 
- *
- * Created on July 18, 2020, 12:04 a.m.
+ * 
+ * 
+----------------------------------------------------------------------
  */
 
 #include <stdio.h>
