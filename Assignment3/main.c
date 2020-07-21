@@ -84,8 +84,6 @@ void random_Numbers_Measurement() {
             arr[i] = rand() % SIZE;
     }
 
-//    write_out(arr, SIZE, "random_test_dat.txt");
-
     //Bubble Sort
     start = clock();
     bubbleSort(arr, SIZE);
